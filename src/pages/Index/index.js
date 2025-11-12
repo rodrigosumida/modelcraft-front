@@ -23,6 +23,7 @@ import {
 import Header from "../../components/Header";
 import api from "../../api/axios";
 import { toast } from "react-toastify";
+import { formatTempo } from "../../functions/formatTempo";
 
 const Index = () => {
   const [estimativa, setEstimativa] = useState({
@@ -66,6 +67,7 @@ const Index = () => {
   });
 
   const [botaoGerar, setBotaoGerar] = useState(false);
+  const [botaoCriar, setBotaoCriar] = useState(false);
 
   const gerarEstimativa = async (e) => {
     e.preventDefault();
@@ -151,8 +153,6 @@ const Index = () => {
         }
       }
 
-      // console.log({ cliente, produto, ...valoresConvertidos });
-
       const res = await api.post("/orcamento/gerar-estimativa", {
         cliente,
         produto,
@@ -167,7 +167,7 @@ const Index = () => {
         perimetro,
         chapa_fundo,
         isopor: { ...isopor, ...res.data.isopor },
-        mdf: { ...isopor, ...res.data.mdf },
+        mdf: { ...mdf, ...res.data.mdf },
         laminado,
         fundido,
         fundido_zero,
@@ -182,9 +182,43 @@ const Index = () => {
     setBotaoGerar(false);
   };
 
+  const validateFields = (obj) => {
+    for (const key in obj) {
+      const valor = obj[key];
+
+      if (valor === null || valor === undefined || valor === "") {
+        return false;
+      }
+
+      // se for um objeto
+      if (typeof valor === "object" && !Array.isArray(valor)) {
+        if (!validateFields(valor)) return false;
+      }
+    }
+
+    return true;
+  };
+
+  const submitOrcamento = async (e) => {
+    e.preventDefault();
+    setBotaoCriar(true);
+
+    try {
+      if (!validateFields(estimativa)) toast.error("Preencha todos os campos");
+
+      await api.post("/orcamento/create", estimativa);
+      toast.success("Orçamento salvo com sucesso!");
+    } catch (err) {
+      toast.error("Ocorreu um erro ao salvar o orçamento");
+      console.error(err);
+    }
+
+    setBotaoCriar(false);
+  };
+
   return (
     <Content>
-      <Header />
+      <Header current={"gerador"} />
       <TopContainer>
         <InputsSection>
           <LeftInputSection>
@@ -830,8 +864,25 @@ const Index = () => {
       <LowerContainer>
         <SubmitButtonContainer>
           <button
+            disabled={botaoCriar}
+            onClick={submitOrcamento}
             style={{ width: "30%" }}
-          >{`Salvar Estimativa | Total horas estimadas (xxxh xxm)`}</button>
+          >{`Salvar Estimativa${
+            estimativa.laminado.tempo &&
+            estimativa.fundido.tempo &&
+            estimativa.fundido_zero.tempo &&
+            estimativa.isopor.tempo &&
+            estimativa.mdf.tempo
+              ? " | Total de horas estimado: " +
+                formatTempo(
+                  estimativa.laminado.tempo +
+                    estimativa.fundido.tempo +
+                    estimativa.fundido_zero.tempo +
+                    estimativa.isopor.tempo +
+                    estimativa.mdf.tempo
+                )
+              : ""
+          }`}</button>
         </SubmitButtonContainer>
       </LowerContainer>
     </Content>

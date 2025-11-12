@@ -1,17 +1,32 @@
 import React from "react";
 
-import { HeaderContainer } from "./styled";
+import { HeaderContainer, HeaderItem } from "./styled";
 
 import { Link } from "react-router-dom";
 
-const Header = () => {
+import BuildIcon from "@mui/icons-material/Build";
+import HistoryIcon from "@mui/icons-material/History";
+
+const Header = ({ current }) => {
   return (
     <HeaderContainer>
       <Link to="/">
-        <span>Gerador</span>
+        <HeaderItem current={current === "gerador"}>
+          <BuildIcon
+            fontSize="small"
+            style={{ marginRight: 6, color: "#FFF", fill: "#FFF" }}
+          />
+          Gerador
+        </HeaderItem>
       </Link>
       <Link to="/historico">
-        <span>Histórico</span>
+        <HeaderItem current={current === "historico"}>
+          <HistoryIcon
+            fontSize="small"
+            style={{ marginRight: 6, color: "#FFF", fill: "#FFF" }}
+          />
+          Histórico
+        </HeaderItem>
       </Link>
     </HeaderContainer>
   );

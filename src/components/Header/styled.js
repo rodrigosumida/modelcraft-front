@@ -11,16 +11,25 @@ export const HeaderContainer = styled.header`
   a {
     padding: 20px 0;
   }
+`;
 
-  span {
-    color: #fff;
-    font-size: 1.25rem;
-    font-weight: bold;
-    padding: 20px;
+export const HeaderItem = styled.span`
+  color: #fff;
+  font-size: 1.25rem;
+  font-weight: bold;
+  line-height: 100%;
+  padding: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: ${(props) => props.current && "#972020"};
 
-    &:hover {
-      background-color: rgba(0, 0, 0, 0.2);
-      cursor: pointer;
-    }
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+  }
+
+  .active {
+    background-color: #8b2020;
   }
 `;

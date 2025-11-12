@@ -143,7 +143,7 @@ const Historico = () => {
 
   return (
     <Content>
-      <Header />
+      <Header current={"historico"} />
       <TableContainer>
         <MaterialReactTable
           columns={tableColumns}
