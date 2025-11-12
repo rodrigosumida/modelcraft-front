@@ -30,6 +30,11 @@ export default createGlobalStyle`
     filter: brightness(80%);
   }
 
+  button:disabled {
+    background-color: #bbb;
+    cursor: not-allowed;
+  }
+
   a {
     text-decoration: none;
   }

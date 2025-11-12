@@ -18,7 +18,18 @@ export const LeftInputSection = styled.div`
 
 export const LogoContainer = styled.div`
   height: 50%;
-  padding: 15px 20px;
+  width: 100%;
+  padding: 15px 10px;
+  display: flex;
+`;
+
+export const ProductInfoContainer = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  justify-content: center;
+  align-items: flex-end;
 `;
 
 export const InputsContainer = styled.div`
@@ -95,7 +106,7 @@ export const ExtraInfoContainer = styled.div`
 `;
 
 export const MiddleContainer = styled.section`
-  height: 50%;
+  height: 40%;
   width: 100%;
   display: grid;
   padding: 0 10px;
@@ -122,4 +133,10 @@ export const MaterialInfoContainer = styled.div`
     color: #515151;
     font-size: 0.9rem;
   }
+`;
+
+export const LowerContainer = styled.div`
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
 `;

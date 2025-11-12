@@ -117,6 +117,22 @@ const Historico = () => {
         header: "Chapa Fundo",
         size: 20,
       },
+      {
+        header: "Tempo Total",
+        accessorFn: (row) => {
+          const { laminado, fundido, fundido_zero, isopor, mdf } = row;
+          if (!laminado || !fundido || !fundido_zero || !isopor || !mdf)
+            return "-";
+          const tempoTotal =
+            laminado.tempo +
+            fundido.tempo +
+            fundido_zero.tempo +
+            isopor.tempo +
+            mdf.tempo;
+          return formatTempo(tempoTotal);
+        },
+        size: 30,
+      },
     ],
     []
   );
