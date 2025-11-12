@@ -11,9 +11,14 @@ import { TableContainer } from "./styled";
 import CircleIcon from "@mui/icons-material/Circle";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import { IconButton, Tooltip } from "@mui/material";
+import { TableModal } from "../../components/TableModal";
+import { formatTempo } from "../../functions/formatTempo";
 
 const Historico = () => {
   const [tableData, setTableData] = useState([]);
+
+  const [modalOpen, setModalOpen] = useState(false);
+  const [estimativa, setEstimativa] = useState({});
 
   const getData = async () => {
     try {
@@ -23,6 +28,17 @@ const Historico = () => {
       toast.error("Ocorreu um erro: " + err.message);
       console.log(err);
     }
+  };
+
+  const handleOpenModal = (estimativa) => {
+    setModalOpen(true);
+    setEstimativa(estimativa);
+  };
+
+  const handleCloseModal = () => {
+    setModalOpen(false);
+    setEstimativa({});
+    getData();
   };
 
   const tableColumns = useMemo(
@@ -58,7 +74,7 @@ const Historico = () => {
                   placement="bottom"
                   title="Adicionar valores reais"
                 >
-                  <IconButton>
+                  <IconButton onClick={() => handleOpenModal(row.original)}>
                     <AccessTimeIcon />
                   </IconButton>
                 </Tooltip>
@@ -160,10 +176,15 @@ const Historico = () => {
                       background: "white",
                     }}
                   >
-                    <strong>Laminado</strong>
+                    <strong>Alumínio Laminado</strong>
                     <p>Volume: {laminado.volume.toFixed(2) ?? "-"}</p>
                     <p>Massa: {laminado.massa.toFixed(2) ?? "-"}</p>
-                    <p>Tempo: {laminado.tempo.toFixed(2) ?? "-"}</p>
+                    <p>
+                      Tempo:{" "}
+                      {`${laminado.tempo.toFixed(2)} (${formatTempo(
+                        laminado.tempo.toFixed(2)
+                      )})` ?? "-"}
+                    </p>
                   </div>
                 )}
 
@@ -176,10 +197,15 @@ const Historico = () => {
                       background: "white",
                     }}
                   >
-                    <strong>Fundido</strong>
+                    <strong>Alumínio Fundido</strong>
                     <p>Volume: {fundido.volume.toFixed(2) ?? "-"}</p>
                     <p>Massa: {fundido.massa.toFixed(2) ?? "-"}</p>
-                    <p>Tempo: {fundido.tempo.toFixed(2) ?? "-"}</p>
+                    <p>
+                      Tempo:{" "}
+                      {`${fundido.tempo.toFixed(2)} (${formatTempo(
+                        fundido.tempo.toFixed(2)
+                      )})` ?? "-"}
+                    </p>
                   </div>
                 )}
 
@@ -192,10 +218,15 @@ const Historico = () => {
                       background: "white",
                     }}
                   >
-                    <strong>Fundido Zero</strong>
+                    <strong>Alumínio Fundido a Zero</strong>
                     <p>Volume: {fundido_zero.volume.toFixed(2) ?? "-"}</p>
                     <p>Massa: {fundido_zero.massa.toFixed(2) ?? "-"}</p>
-                    <p>Tempo: {fundido_zero.tempo.toFixed(2) ?? "-"}</p>
+                    <p>
+                      Tempo:{" "}
+                      {`${fundido_zero.tempo.toFixed(2)} (${formatTempo(
+                        fundido_zero.tempo.toFixed(2)
+                      )})` ?? "-"}
+                    </p>
                   </div>
                 )}
 
@@ -215,7 +246,12 @@ const Historico = () => {
                         "-"}
                     </p>
                     <p>Volume: {isopor.volume.toFixed(2) ?? "-"}</p>
-                    <p>Tempo: {isopor.tempo.toFixed(2) ?? "-"}</p>
+                    <p>
+                      Tempo:{" "}
+                      {`${isopor.tempo.toFixed(2)} (${formatTempo(
+                        isopor.tempo.toFixed(2)
+                      )})` ?? "-"}
+                    </p>
                   </div>
                 )}
 
@@ -234,7 +270,12 @@ const Historico = () => {
                       {`${mdf.comprimento}x${mdf.largura}x${mdf.altura}` ?? "-"}
                     </p>
                     <p>Chapas: {mdf.chapas.toFixed(2) ?? "-"}</p>
-                    <p>Tempo: {mdf.tempo.toFixed(2) ?? "-"}</p>
+                    <p>
+                      Tempo:{" "}
+                      {`${mdf.tempo.toFixed(2)} (${formatTempo(
+                        mdf.tempo.toFixed(2)
+                      )})` ?? "-"}
+                    </p>
                   </div>
                 )}
               </div>
@@ -242,6 +283,11 @@ const Historico = () => {
           }}
         />
       </TableContainer>
+      <TableModal
+        open={modalOpen}
+        onClose={handleCloseModal}
+        estimativa={estimativa}
+      />
     </Content>
   );
 };
