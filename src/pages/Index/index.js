@@ -69,6 +69,48 @@ const Index = () => {
   const [botaoGerar, setBotaoGerar] = useState(false);
   const [botaoCriar, setBotaoCriar] = useState(false);
 
+  const resetValues = () => {
+    setEstimativa({
+      cliente: "",
+      produto: "",
+      comprimento: null,
+      largura: null,
+      altura: null,
+      area: null,
+      perimetro: null,
+      laminado: {
+        volume: null,
+        massa: null,
+        tempo: null,
+      },
+      fundido: {
+        volume: null,
+        massa: null,
+        tempo: null,
+      },
+      fundido_zero: {
+        volume: null,
+        massa: null,
+        tempo: null,
+      },
+      isopor: {
+        comprimento: null,
+        largura: null,
+        altura: null,
+        volume: null,
+        tempo: null,
+      },
+      mdf: {
+        comprimento: null,
+        largura: null,
+        altura: null,
+        chapas: null,
+        tempo: null,
+      },
+      chapa_fundo: null,
+    });
+  };
+
   const gerarEstimativa = async (e) => {
     e.preventDefault();
     setBotaoGerar(true);
@@ -93,12 +135,12 @@ const Index = () => {
         largura,
         altura,
         area,
-        isopor_comprimento: isopor.comprimento,
-        isopor_largura: isopor.largura,
-        isopor_altura: isopor.altura,
-        mdf_comprimento: mdf.comprimento,
-        mdf_largura: mdf.largura,
-        mdf_altura: mdf.altura,
+        // isopor_comprimento: isopor.comprimento,
+        // isopor_largura: isopor.largura,
+        // isopor_altura: isopor.altura,
+        // mdf_comprimento: mdf.comprimento,
+        // mdf_largura: mdf.largura,
+        // mdf_altura: mdf.altura,
       };
 
       for (const [campo, valor] of Object.entries(camposObrigatorios)) {
@@ -213,6 +255,7 @@ const Index = () => {
       console.error(err);
     }
 
+    resetValues();
     setBotaoCriar(false);
   };
 
@@ -815,7 +858,7 @@ const Index = () => {
               }
             ></input>
           </div>
-          <span>Volume:</span>
+          <span>Chapas:</span>
           <input
             style={{
               width: "100%",
