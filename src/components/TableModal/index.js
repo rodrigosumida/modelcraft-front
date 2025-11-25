@@ -7,6 +7,8 @@ import {
   DialogTitle,
   TextField,
 } from "@mui/material";
+import { toast } from "react-toastify";
+import api from "../../api/axios";
 
 export const TableModal = ({ open, onClose, estimativa }) => {
   const [tempos, setTempos] = useState({
@@ -44,23 +46,43 @@ export const TableModal = ({ open, onClose, estimativa }) => {
   const handleSubmit = async () => {
     const valoresConvertidos = {
       laminado: {
+        id: estimativa._id,
+        valor: estimativa.laminado.massa,
         tempo: timeToDecimal(tempos.tempo_laminado),
       },
       fundido: {
+        id: estimativa._id,
+        valor: estimativa.fundido.massa,
         tempo: timeToDecimal(tempos.tempo_fundido),
       },
       fundido_zero: {
+        id: estimativa._id,
+        valor: estimativa.fundido_zero.massa,
         tempo: timeToDecimal(tempos.tempo_fundido_zero),
       },
       isopor: {
+        id: estimativa._id,
+        valor: estimativa.isopor.volume,
         tempo: timeToDecimal(tempos.tempo_isopor),
-      },
-      mdf: {
-        tempo: timeToDecimal(tempos.tempo_mdf),
       },
     };
 
-    console.log(valoresConvertidos);
+    Object.values(valoresConvertidos).forEach((item) => {
+      if (!item.tempo) {
+        toast.error("Um dos campos está com o formato inválido");
+        return;
+      }
+    });
+
+    try {
+      await api.put("/material-performance/update-real", valoresConvertidos);
+
+      toast.success("Valores atualizados!");
+      onClose();
+    } catch (err) {
+      toast.error("Ocorreu um erro");
+      console.error(err);
+    }
   };
 
   const handleTimeChange = (campo, valor) => {

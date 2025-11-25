@@ -24,8 +24,11 @@ import Header from "../../components/Header";
 import api from "../../api/axios";
 import { toast } from "react-toastify";
 import { formatTempo } from "../../functions/formatTempo";
+import { useNavigate } from "react-router-dom";
 
 const Index = () => {
+  const navigate = useNavigate();
+
   const [estimativa, setEstimativa] = useState({
     cliente: "",
     produto: "",
@@ -257,6 +260,7 @@ const Index = () => {
 
     resetValues();
     setBotaoCriar(false);
+    navigate("/historico");
   };
 
   return (
