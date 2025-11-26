@@ -2,6 +2,7 @@
   "name": "modelcraft-app",
   "version": "0.1.0",
   "private": true,
+  "homepage": "/",
   "dependencies": {
     "@mui/icons-material": "^7.0.1",
     "@mui/material": "^7.0.1",
